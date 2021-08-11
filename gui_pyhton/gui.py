@@ -93,8 +93,8 @@ def Serial_thread():
 
 
 
-x = threading.Thread(target=Serial_thread, args=(), daemon=True)
-x.start()
+# x = threading.Thread(target=Serial_thread, args=(), daemon=True)
+# x.start()
 
 
 
@@ -231,7 +231,7 @@ if __name__ == '__main__':
     screen_height = main.winfo_screenheight()
     screen_width = main.winfo_screenwidth()
 
-
+    print(screen_height,screen_width)
 
 
     canvas1 = Canvas(main,width=screen_width, height=screen_height)
