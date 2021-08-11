@@ -75,7 +75,7 @@ def Serial_thread():
 
 
                     if get_data_flag:
-                        all_data.append(raw_data + ' ' + 'movedir:' + move_dir + '\r\n')
+                        all_data.append(raw_data + ' ' + 'movedir:' + str(move_dir) + '\r\n')
 
             
             if command_queue:
@@ -162,7 +162,8 @@ def do_fuck_behnam():
         move_dir = -1
         time.sleep(15)
     get_data_flag = False
-    _file.write(all_data)
+    for line in all_data:
+        _file.write(line)
     _file.close()
 
 
