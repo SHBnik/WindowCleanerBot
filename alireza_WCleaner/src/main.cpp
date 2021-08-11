@@ -37,7 +37,7 @@ bool no_move_flag = false;
 uint8_t weight_setpoint = 0;
 bool pid_flag = false;
 
-uint8_t PITCH_DEV_LIMIT,ROLL_DEV_LIMIT;
+uint8_t PITCH_DEV_LIMIT = 20,ROLL_DEV_LIMIT = 20;
 
 // G1 move
 //G91 relative

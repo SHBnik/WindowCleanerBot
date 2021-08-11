@@ -52,9 +52,10 @@ def Serial_thread():
                     data = raw_data.split()
                     plot_new_data(data)
                     load_loc_text.set(data[3].split(":")[1])
-                    load_ang_textbox.set(data[0].split(":")[1])
+                    load_ang_text.set(data[0].split(":")[1])
                     pitch_ang_text.set(data[2].split(":")[1])
                     roll_ang_text.set(data[1].split(":")[1])
+
                     if float(data[4].split(":")[1]) > max_load:
                         if last_max_load_state == 'smaler':
                             just_one_buzzer_com = False
@@ -190,7 +191,7 @@ def start_plot():
     figure_canvas = FigureCanvasTkAgg(fig,
                                master = canvas1)  
 
-    figure_canvas_window = canvas1.create_window(1000, 200, anchor=NW, window=figure_canvas.get_tk_widget())
+    figure_canvas_window = canvas1.create_window(800, 200, anchor=NW, window=figure_canvas.get_tk_widget())
     figure_canvas.draw()
 
 
@@ -232,7 +233,7 @@ if __name__ == '__main__':
     screen_height = main.winfo_screenheight()
     screen_width = main.winfo_screenwidth()
 
-
+    print(screen_height,screen_width)
 
 
     canvas1 = Canvas(main,width=screen_width, height=screen_height)
@@ -244,7 +245,7 @@ if __name__ == '__main__':
 
     exit_btn = Button(canvas1, text='exit', width=10,
                 height=2, bd='10', command=main.destroy)
-    exit_btn_window = canvas1.create_window(1400, 10, anchor=NW, window=exit_btn)
+    exit_btn_window = canvas1.create_window(1250, 10, anchor=NW, window=exit_btn)
 
 
     home_btn = Button(canvas1, text='home', width=10,
