@@ -161,7 +161,7 @@ def do_fuck_behnam():
         command_queue.append("G1 X0")
         move_dir = -1
         time.sleep(15)
-    get_data_flag = FALSE
+    get_data_flag = False
     _file.write(all_data)
     _file.close()
 
