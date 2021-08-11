@@ -52,7 +52,7 @@ def Serial_thread():
                     data = raw_data.split()
                     plot_new_data(data)
                     load_loc_text.set(data[3].split(":")[1])
-                    load_ang_textbox.set(data[0].split(":")[1])
+                    load_ang_text.set(data[0].split(":")[1])
 
                     if float(data[4].split(":")[1]) > max_load:
                         if last_max_load_state == 'smaler':
@@ -93,8 +93,8 @@ def Serial_thread():
 
 
 
-# x = threading.Thread(target=Serial_thread, args=(), daemon=True)
-# x.start()
+x = threading.Thread(target=Serial_thread, args=(), daemon=True)
+x.start()
 
 
 
