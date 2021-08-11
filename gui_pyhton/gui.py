@@ -53,7 +53,8 @@ def Serial_thread():
                     plot_new_data(data)
                     load_loc_text.set(data[3].split(":")[1])
                     load_ang_textbox.set(data[0].split(":")[1])
-
+                    pitch_ang_text.set(data[2].split(":")[1])
+                    roll_ang_text.set(data[1].split(":")[1])
                     if float(data[4].split(":")[1]) > max_load:
                         if last_max_load_state == 'smaler':
                             just_one_buzzer_com = False
