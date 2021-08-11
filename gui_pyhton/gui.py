@@ -189,7 +189,7 @@ def start_plot():
     figure_canvas = FigureCanvasTkAgg(fig,
                                master = canvas1)  
 
-    figure_canvas_window = canvas1.create_window(1000, 200, anchor=NW, window=figure_canvas.get_tk_widget())
+    figure_canvas_window = canvas1.create_window(800, 200, anchor=NW, window=figure_canvas.get_tk_widget())
     figure_canvas.draw()
 
 
@@ -243,7 +243,7 @@ if __name__ == '__main__':
 
     exit_btn = Button(canvas1, text='exit', width=10,
                 height=2, bd='10', command=main.destroy)
-    exit_btn_window = canvas1.create_window(1400, 10, anchor=NW, window=exit_btn)
+    exit_btn_window = canvas1.create_window(1250, 10, anchor=NW, window=exit_btn)
 
 
     home_btn = Button(canvas1, text='home', width=10,
