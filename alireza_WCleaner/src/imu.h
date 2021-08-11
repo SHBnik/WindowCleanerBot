@@ -3,6 +3,7 @@
 
 #include "MPU9250.h"
 #include "config.h"
+#include "gcode.h"
 
 
 extern float pitch_init, roll_init;
