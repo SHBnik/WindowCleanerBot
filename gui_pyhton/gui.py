@@ -83,20 +83,15 @@ def Serial_thread():
 
 
                     if get_data_flag:
-<<<<<<< HEAD
                         all_data.append(raw_data + ' ' + 'movedir:' + str(move_dir) + '\n')
 
                     if get_data_flag2:
                         all_data.append(raw_data + ' ' + 'movedir:' + str(move_dir) + '\n')
                         get_data_flag2 = False
 
-                        
                     if get_data_flag3:
                         all_data.append(raw_data + '\n')
 
-=======
-                        all_data.append(raw_data + ' ' + 'movedir:' + str(move_dir) + '\r\n')
->>>>>>> 37238f30d3e92676c9bfae7bf1f07dd06916fef1
 
             
             if command_queue:
@@ -129,7 +124,6 @@ def home():
 def m50():
     command_queue.append("M50")
     canvas1.itemconfig(is_reset_scale, fill='green')
-    # messagebox.showerror(title="title", message="message")
     
 
 def report_data():
@@ -166,7 +160,7 @@ def set_max_load():
 
 
 
-def do_fuck_behnam():
+def dfb():
     global is_homed,get_data_flag,move_dir
     is_homed = False
     command_queue.append("G28")
@@ -193,7 +187,7 @@ def do_fuck_behnam():
     _file.close()
 
 
-def do_fuck_behnam2():
+def dfb2():
     global is_homed,get_data_flag2,move_dir
     is_homed = False
     command_queue.append("G28")
@@ -216,9 +210,26 @@ def do_fuck_behnam2():
     _file.close()
 
 
+def dfb3():
+    global is_homed,get_data_flag2,move_dir,_file_pid,get_data_flag3
+    is_homed = False
+    command_queue.append("G28")
+    while not is_homed: 
+        time.sleep(0.5)
+    command_queue.append("M50")
+    time.sleep(2)
+    command_queue.append("M105 T100")
+    time.sleep(1)
+    command_queue.append("G90")
+    command_queue.append("G1 X70")
+    get_data_flag3 = True
+    _file_pid = open(str(str(filename_textbox.get())+'.csv'),'a')
+
+
+
 
 def save_data():
-    y = threading.Thread(target=do_fuck_behnam2, args=(), daemon=True)
+    y = threading.Thread(target=dfb3, args=(), daemon=True)
     y.start()
 
 
