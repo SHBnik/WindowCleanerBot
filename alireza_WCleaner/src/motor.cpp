@@ -173,12 +173,12 @@ void G1(){
 
 void G91(){
   move_mode = relative;
-  Commands.comment("relative");
+  // Commands.comment("relative");
 }
 
 void G90(){
   move_mode = absolute;
-  Commands.comment("absolute");
+  // Commands.comment("absolute");
 }
 
 

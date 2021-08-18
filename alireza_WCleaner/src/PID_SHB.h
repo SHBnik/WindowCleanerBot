@@ -11,7 +11,7 @@ class PID{
 
 
     PID::PID(float, float, float, int);
-    float PID::Compute(int , int);               
+    float PID::Compute(float , float);               
     void PID::SetErrorLimit(int ,int);
     void PID::SetErrorILimit(int ,int);
     void PID::SetOutputLimit(int ,int);

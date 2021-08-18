@@ -16,8 +16,8 @@ void setup() {
   pinMode(A1,INPUT);
   pinMode(A2,INPUT);
   pinMode(10,INPUT);
-  stepper.setMaxSpeed(600);
-  stepper.setAcceleration(8000);
+  stepper.setMaxSpeed(700);
+  stepper.setAcceleration(5000);
 // stepper.setSpeed(-1000);
 
 }
@@ -28,12 +28,12 @@ void loop() {
     stepper.setSpeed(0);
     stepper.runSpeed();
   }
-  else if(knob <= 490){
-    stepper.setSpeed(map(knob,420,0,0,-600));
+  else if(knob <= 440){
+    stepper.setSpeed(-600/*map(knob,420,0,0,-600)*/); //4 mm/s speed
     stepper.runSpeed();
   }
-  else if(knob >= 510){
-    stepper.setSpeed(map(knob,530,1023,0,600));
+  else if(knob >= 550){
+    stepper.setSpeed(600/*map(knob,530,1023,0,600)*/);
     stepper.runSpeed();
   }
 

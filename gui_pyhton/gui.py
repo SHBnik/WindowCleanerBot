@@ -83,6 +83,7 @@ def Serial_thread():
 
 
                     if get_data_flag:
+<<<<<<< HEAD
                         all_data.append(raw_data + ' ' + 'movedir:' + str(move_dir) + '\n')
 
                     if get_data_flag2:
@@ -93,6 +94,9 @@ def Serial_thread():
                     if get_data_flag3:
                         all_data.append(raw_data + '\n')
 
+=======
+                        all_data.append(raw_data + ' ' + 'movedir:' + str(move_dir) + '\r\n')
+>>>>>>> 37238f30d3e92676c9bfae7bf1f07dd06916fef1
 
             
             if command_queue:

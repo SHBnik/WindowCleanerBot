@@ -3,7 +3,7 @@
 
 
 MPU9250 mpu1;
-
+bool buzzer_for_euler = false;
 
 
 void update_mpu(){
@@ -13,13 +13,18 @@ void update_mpu(){
       if(abs(abs(mpu1.getPitch()) - pitch_init) >= PITCH_DEV_LIMIT ){
 
         turn_buuzer_on_off(true);
+        buzzer_for_euler = true;
       }
       else if(abs((abs(mpu1.getRoll()) - roll_init)) >= ROLL_DEV_LIMIT ){
 
         turn_buuzer_on_off(true);
+        buzzer_for_euler = true;
       }
       else{
-        turn_buuzer_on_off(false);
+        if(buzzer_for_euler){
+          turn_buuzer_on_off(false);
+          buzzer_for_euler = false;
+        }
       }
 
     }else{

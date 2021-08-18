@@ -58,6 +58,7 @@ void setup() {
   PinInit();
   ardcell_init();
   weight_pid.SetOutputLimit(-1000, 1000);
+  weight_pid.SetErrorILimit(-10,10);
   lowpassFilterStats.setWindowSecs( 0.1);
 }
 
@@ -80,8 +81,10 @@ void loop() {
     if(new_mass_data_flag){
       new_mass_data_flag = false;
 
+      // if(abs(weight_setpoint - mass) > 0.5){
+      //   weight_pid.ReSetITerm();
+      // }
       motor_speed = weight_pid.Compute(weight_setpoint,mass);
-
       if(motor_speed >= 0)  speed_dir = 0;
       else                  speed_dir = 1;
 

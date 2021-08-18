@@ -11,7 +11,7 @@ PID::PID(float Kp, float Ki, float Kd, int shift){
 
 
 
-float PID::Compute(int target , int sensor_value ){
+float PID::Compute(float target , float sensor_value ){
   float output;
   float time_changed;
   timer = millis();
@@ -19,18 +19,9 @@ float PID::Compute(int target , int sensor_value ){
   
 
   err = sensor_value - target;
-  if(error_limit){
-    err = constrain(err,error_limit_min,error_limit_max);
-  }  
   err_D = (float)(err - err_old) /(float) time_changed;
-  err_I += (float)err * time_changed;
-  if(error_I_limit){
-    err_I = constrain(err_I,error_I_limit_min,error_I_limit_max);
-  }
-  output = Y_shift + kp * err + kd * err_D + ki * err_I;
-  if(output_limit){
-    output = constrain(output,output_limit_min,output_limit_max);
-  }
+  err_I += (float)err * time_changed /(float) 100;
+  output = kp * err + kd * err_D + ki * err_I;
 
   err_old = err;
   timer_old = timer;
