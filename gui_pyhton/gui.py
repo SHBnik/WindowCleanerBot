@@ -22,13 +22,18 @@ max_load = 100
 just_one_buzzer_com = False
 last_max_load_state = False
 
+_file_pid = None
+
+
 is_homed = False
 get_data_flag = False
+get_data_flag2 = False
+get_data_flag3 = False
 move_dir = 0
 all_data = []
 
 def Serial_thread():
-    global command_queue,just_one_buzzer_com,last_max_load_state,is_homed,all_data
+    global command_queue,just_one_buzzer_com,last_max_load_state,is_homed,all_data,get_data_flag2,get_data_flag,get_data_flag3
     with serial.Serial('COM3', 9600, timeout=10) as ser:
         while True:
             if(ser.inWaiting()):
@@ -48,8 +53,11 @@ def Serial_thread():
                 elif raw_data == "Homed!":
                     canvas1.itemconfig(is_home_led, fill='green')
                     is_homed = True
+                elif raw_data == "Not Homed!":
+                    canvas1.itemconfig(is_home_led, fill='red')
                 else:
                     data = raw_data.split()
+                    # print(data)
                     plot_new_data(data)
                     load_loc_text.set(data[3].split(":")[1])
                     load_ang_text.set(data[0].split(":")[1])
@@ -75,7 +83,16 @@ def Serial_thread():
 
 
                     if get_data_flag:
-                        all_data.append(raw_data + ' ' + 'movedir:' + move_dir + '\r\n')
+                        all_data.append(raw_data + ' ' + 'movedir:' + str(move_dir) + '\n')
+
+                    if get_data_flag2:
+                        all_data.append(raw_data + ' ' + 'movedir:' + str(move_dir) + '\n')
+                        get_data_flag2 = False
+
+                        
+                    if get_data_flag3:
+                        all_data.append(raw_data + '\n')
+
 
             
             if command_queue:
@@ -108,7 +125,7 @@ def home():
 def m50():
     command_queue.append("M50")
     canvas1.itemconfig(is_reset_scale, fill='green')
-    messagebox.showerror(title="title", message="message")
+    # messagebox.showerror(title="title", message="message")
     
 
 def report_data():
@@ -117,7 +134,10 @@ def report_data():
 
 
 def start_pid():
+    global _file_pid,get_data_flag3
     try:
+        get_data_flag3 = True
+        _file_pid = open(str(str(filename_textbox.get())+'.csv'),'a')
         command_queue.append("G10 P%f"%(float(load_textbox.get())))
         canvas1.itemconfig(is_pid, fill='green')
     except Exception as e:
@@ -146,7 +166,8 @@ def do_fuck_behnam():
     global is_homed,get_data_flag,move_dir
     is_homed = False
     command_queue.append("G28")
-    while not is_homed: pass
+    while not is_homed: 
+        time.sleep(0.5)
     command_queue.append("M50")
     time.sleep(2)
     get_data_flag = True
@@ -158,18 +179,42 @@ def do_fuck_behnam():
         command_queue.append("G1 X70")
         move_dir = 1
         time.sleep(15)
-        command_queue.append("G1 X0")
+        command_queue.append("G1 X36")
         move_dir = -1
         time.sleep(15)
+    print('data done')
     get_data_flag = False
-    _file.write(all_data)
+    for line in all_data:
+        _file.write(line)
+    _file.close()
+
+
+def do_fuck_behnam2():
+    global is_homed,get_data_flag2,move_dir
+    is_homed = False
+    command_queue.append("G28")
+    while not is_homed: 
+        time.sleep(0.5)
+    command_queue.append("M50")
+    time.sleep(2)
+    command_queue.append("M105 T100")
+    time.sleep(1)
+    command_queue.append("G90")
+    _file = open(str(str(filename_textbox.get())+'.csv'),'a')
+    for i in range(70):
+        command_queue.append("G1 X%f"%(i+1))
+        time.sleep(2)
+        get_data_flag2 = True
+        time.sleep(0.2)
+    print('data done')
+    for line in all_data:
+        _file.write(line)
     _file.close()
 
 
 
-
 def save_data():
-    y = threading.Thread(target=do_fuck_behnam, args=(), daemon=True)
+    y = threading.Thread(target=do_fuck_behnam2, args=(), daemon=True)
     y.start()
 
 
@@ -184,9 +229,9 @@ def start_plot():
   
     plot_weight = fig.add_subplot(111)
     
-    plot_weight.set_xlabel('Time') 
-    plot_weight.set_ylabel('Force') 
-    plot_weight.set_title("Force-Time plot")
+    plot_weight.set_xlabel('Time(s)') 
+    plot_weight.set_ylabel('Load(grF)') 
+    plot_weight.set_title("Horizental Load Vs. Time")
   
     figure_canvas = FigureCanvasTkAgg(fig,
                                master = canvas1)  
@@ -210,10 +255,34 @@ def plot_new_data(data):
                 weight_data[1].pop(0)
 
             plot_weight.plot(weight_data[0],weight_data[1], color='orange')
+            plot_weight.set_xlabel('Time(s)') 
+            plot_weight.set_ylabel('Load(grF)') 
+            plot_weight.set_title("Horizental Load Vs. Time")
             figure_canvas.draw()
 
 
 
+def bformula_thread():
+    global is_homed,get_data_flag,move_dir
+    is_homed = False
+    command_queue.append("G28")
+    while not is_homed: 
+        time.sleep(0.5)
+    command_queue.append("M50")
+    time.sleep(2)
+    get_data_flag = True
+    command_queue.append("M105 T100")
+    time.sleep(1)
+    command_queue.append("G90")
+    command_queue.append("G1 X70")
+    time.sleep(30)
+    
+    command_queue.append("G1 X%f"%Fx.Place(float(load_ang_text.get()),float(load_textbox.get())))
+
+
+def bformula():
+    y = threading.Thread(target=bformula_thread, args=(), daemon=True)
+    y.start()
 
 def create_circle(x, y, r, canvasName):
     x0 = x - r
@@ -222,6 +291,15 @@ def create_circle(x, y, r, canvasName):
     y1 = y + r
     return canvasName.create_oval(x0, y0, x1, y1)
 
+def Exit():
+    global _file_pid
+    try:
+        for line in all_data:
+            _file_pid.write(line)
+        _file_pid.close()
+    except:
+        pass
+    main.destroy()
 
 
 if __name__ == '__main__':
@@ -233,9 +311,6 @@ if __name__ == '__main__':
     screen_height = main.winfo_screenheight()
     screen_width = main.winfo_screenwidth()
 
-    print(screen_height,screen_width)
-
-
     canvas1 = Canvas(main,width=screen_width, height=screen_height)
     canvas1.pack()
     canvas1.place(x=-1,y=-1)
@@ -244,7 +319,7 @@ if __name__ == '__main__':
 
 
     exit_btn = Button(canvas1, text='exit', width=10,
-                height=2, bd='10', command=main.destroy)
+                height=2, bd='10', command=Exit)
     exit_btn_window = canvas1.create_window(1250, 10, anchor=NW, window=exit_btn)
 
 
@@ -289,15 +364,21 @@ if __name__ == '__main__':
     canvas1.itemconfig(is_pid, fill='red')
 
 
+
+    bdick_btn = Button(canvas1, text='start formula', width=15,
+                height=2, bd='10', command=bformula)
+    bdick_btn_window = canvas1.create_window(10, 320, anchor=NW, window=bdick_btn)
+
+
     load_loc_text = StringVar()
-    canvas1.create_text(60,340,text="weight location:")
+    canvas1.create_text(60,400,text="weight location:")
     load_loc_textbox = ttk.Entry(canvas1,width = 5,state='readonly',textvariable=load_loc_text) 
-    canvas1.create_window(130, 340, window=load_loc_textbox)
+    canvas1.create_window(130, 400, window=load_loc_textbox)
     
     load_ang_text = StringVar()
-    canvas1.create_text(60,380,text="link angle:")
+    canvas1.create_text(60,430,text="link angle:")
     load_ang_textbox = ttk.Entry(canvas1,width = 5,state='readonly',textvariable=load_ang_text) 
-    canvas1.create_window(130, 380, window=load_ang_textbox)
+    canvas1.create_window(130, 430, window=load_ang_textbox)
     
 
 
@@ -310,7 +391,7 @@ if __name__ == '__main__':
     canvas1.create_window(580, 340, window=pitch_ang_textbox_new)
 
 
-    
+
     roll_ang_text = StringVar()
     canvas1.create_text(490,380,text="roll:")
     roll_ang_textbox = ttk.Entry(canvas1,width = 5,state='readonly',textvariable=roll_ang_text) 
