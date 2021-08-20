@@ -248,7 +248,7 @@ def start_plot():
     plot_weight = fig.add_subplot(111)
     
     plot_weight.set_xlabel('Time(s)') 
-    plot_weight.set_ylabel('Load(grF)') 
+    plot_weight.set_ylabel('Load(gF)') 
     plot_weight.set_title("Horizental Load Vs. Time")
   
     figure_canvas = FigureCanvasTkAgg(fig,
@@ -274,7 +274,7 @@ def plot_new_data(data):
 
             plot_weight.plot(weight_data[0],weight_data[1], color='orange')
             plot_weight.set_xlabel('Time(s)') 
-            plot_weight.set_ylabel('Load(grF)') 
+            plot_weight.set_ylabel('Load(gF)') 
             plot_weight.set_title("Horizental Load Vs. Time")
             figure_canvas.draw()
 
