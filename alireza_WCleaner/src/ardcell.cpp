@@ -13,7 +13,8 @@ float end_mass(){
 
 void update_ardcell(){
     if(ardcell_serial.available()){
-        mass = ardcell_serial.readStringUntil('\n').toFloat() * abs(cos(read_angle()*DEG_TO_RAD));//- end_mass();
+        mass = (ardcell_serial.readStringUntil('\n').toFloat() 
+            + MAX_HEAD_WEIGHT * sin(47 - read_angle()*DEG_TO_RAD ))/cos(47 - read_angle()*DEG_TO_RAD );
         new_mass_data_flag = true;
 
     }
