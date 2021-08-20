@@ -32,6 +32,9 @@ get_data_flag3 = False
 move_dir = 0
 all_data = []
 
+
+# i am alireza
+
 def Serial_thread():
     global command_queue,just_one_buzzer_com,last_max_load_state,is_homed,all_data,get_data_flag2,get_data_flag,get_data_flag3
     with serial.Serial('COM3', 9600, timeout=10) as ser:
