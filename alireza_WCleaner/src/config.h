@@ -42,8 +42,8 @@
 
 #define MAX_X_LENGTH 70
 
-#define KP 0.1
-#define KD 0.01
+#define KP 0.009
+#define KD 0.0008
 #define KI 0
 
 // #define KP 10

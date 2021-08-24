@@ -18,7 +18,7 @@ plot_weight = None
 
 weight_data = [list(),list()]
 
-max_load = 100
+max_load = 400
 just_one_buzzer_com = False
 last_max_load_state = False
 
@@ -63,7 +63,7 @@ def Serial_thread():
                     # print(data)
                     plot_new_data(data)
                     load_loc_text.set(data[3].split(":")[1])
-                    load_ang_text.set(data[0].split(":")[1])
+                    load_ang_text.set(str(92-float(data[0].split(":")[1])))
                     pitch_ang_text.set(data[2].split(":")[1])
                     roll_ang_text.set(data[1].split(":")[1])
 
@@ -211,6 +211,8 @@ def dfb2():
     for line in all_data:
         _file.write(line)
     _file.close()
+    print('done done')
+    
 
 
 def dfb3():
@@ -433,7 +435,7 @@ if __name__ == '__main__':
     max_load_textbox = ttk.Entry(canvas1,width = 5,state='readonly',textvariable=max_load_text) 
     canvas1.create_window(530, 440, window=max_load_textbox)
     canvas1.create_window(580, 440, window=max_load_textbox_new)
-    max_load_text.set("100")
+    max_load_text.set("400")
 
 
     max_load_set_btn = Button(canvas1, text='Set', width=5,
