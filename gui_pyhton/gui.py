@@ -297,7 +297,7 @@ def bformula_thread():
     command_queue.append("G1 X70")
     time.sleep(30)
     
-    command_queue.append("G1 X%f"%Fx.Place(float(load_ang_text.get()),float(load_textbox.get())))
+    command_queue.append("G1 X%f"%Fx.x_distance(float(load_ang_text.get()),float(load_textbox.get())))
 
 
 def bformula():
