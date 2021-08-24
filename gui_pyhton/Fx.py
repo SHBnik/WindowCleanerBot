@@ -20,3 +20,13 @@ def Place(theta, force):
     l0_prime = 0.04
     x = ((l*force / m*g) - l0_prime)*math.tan(theta*math.pi/180)
     return x
+
+
+def x_distance(theta, force):
+    # receives theta (degrees) and force (gram Force) and gives out x (millimeters)
+    a = 64.37
+    b = 58.89
+    c = 17.73
+    d = 92.65
+    x = (((force * 150) / (a * 9.8)) - d) * math.tan((92 - theta + c) * math.pi / 180) + b
+    
