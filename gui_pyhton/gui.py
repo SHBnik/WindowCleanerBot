@@ -234,7 +234,7 @@ def dfb3():
 
 
 def save_data():
-    y = threading.Thread(target=dfb3, args=(), daemon=True)
+    y = threading.Thread(target=dfb2, args=(), daemon=True)
     y.start()
 
 
@@ -296,8 +296,9 @@ def bformula_thread():
     command_queue.append("G90")
     command_queue.append("G1 X70")
     time.sleep(30)
-    
-    command_queue.append("G1 X%f"%Fx.x_distance(float(load_ang_text.get()),float(load_textbox.get())))
+    temp = Fx.x_dis(float(load_ang_text.get()),float(load_textbox.get()))
+    print(temp)
+    command_queue.append("G1 X%f"%temp)
 
 
 def bformula():
