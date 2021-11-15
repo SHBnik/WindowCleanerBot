@@ -28,5 +28,31 @@ def x_distance(theta, force):
     b = 58.89
     c = 17.73
     d = 92.65
-    x = (((force * 150) / (a * 9.8)) - d) * math.tan((92 - theta + c) * math.pi / 180) + b
+    x = (((force * 150) / (a * 9.8)) - d) * math.tan((theta - c) * math.pi / 180) + b
+    return x
+
+def x_d(theta, force):
+    p00 = -10770
+    p10 = 340.4
+    p01 = 517.9
+    p11 = -24.91
+    p02 = -1.028
+    p12 = 0.6461
+    p03 = -0.2879
+    p13 = -0.005718
+    p04 = 0.00384
+    x = (force - p00 - p01 * theta - p02 * theta**2 - p03 * theta**3 - p04 * theta**4)/(p10 + p11 * theta + p12 * theta**2 + p13 * theta**3)
+    return x
+
+
+def x_dis(tehta, force):
+    p1 = -0.0599
+    p2 = 22.4
+    p3 = -721.1
+    x = (-p2 + math.sqrt(p2**2 - 4 * p1 * (p3-force))) / (2 * p1)
+    return x
+
+print(x_d(33, 200))
+
+
     
