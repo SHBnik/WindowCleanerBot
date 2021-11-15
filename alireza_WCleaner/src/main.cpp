@@ -7,6 +7,7 @@
 #include "ardcell.h"
 #include "PID_SHB.h"
 #include "Filters.h"
+#include "MassFormula.h"
 
 void PinInit();
 void Report();
@@ -84,7 +85,9 @@ void loop() {
       // if(abs(weight_setpoint - mass) > 0.5){
       //   weight_pid.ReSetITerm();
       // }
-      motor_speed = weight_pid.Compute(weight_setpoint,mass);
+      float calc_mass = force_gram(GET_X_POS,read_angle());
+      motor_speed = weight_pid.Compute(weight_setpoint,calc_mass);
+      // motor_speed = weight_pid.Compute(weight_setpoint,mass);
       if(motor_speed >= 0)  speed_dir = 0;
       else                  speed_dir = 1;
 

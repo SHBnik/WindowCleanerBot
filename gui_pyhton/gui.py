@@ -143,6 +143,31 @@ def start_pid():
         canvas1.itemconfig(is_pid, fill='green')
     except Exception as e:
         messagebox.showerror(title="Error In Start PID",message=e)
+        
+        
+def start_pid_new():
+    global is_homed,_file_pid,get_data_flag3
+    
+    is_homed = False
+    command_queue.append("G28")
+    while not is_homed: 
+        time.sleep(0.5)
+    command_queue.append("M50")
+    time.sleep(2)
+    get_data_flag = True
+    command_queue.append("M105 T100")
+    time.sleep(1)
+    command_queue.append("G90")
+    
+    try:
+        get_data_flag3 = True
+        _file_pid = open(str(str(filename_textbox.get())+'.csv'),'a')
+        command_queue.append("G10 P%f"%(float(load_textbox.get())))
+        canvas1.itemconfig(is_pid, fill='green')
+    except Exception as e:
+        messagebox.showerror(title="Error In Start PID",message=e)
+    
+    
 
 def set_roll_pitch():
     try:
@@ -376,8 +401,12 @@ if __name__ == '__main__':
                 height=2, bd='10', command=report_data)
     data_btn_window = canvas1.create_window(10, 200, anchor=NW, window=data_btn)
     
+    # pid_btn = Button(canvas1, text='start pid', width=15,
+    #             height=2, bd='10', command=start_pid)
+                
     pid_btn = Button(canvas1, text='start pid', width=15,
-                height=2, bd='10', command=start_pid)
+                height=2, bd='10', command=start_pid_new)
+    
     pid_btn_window = canvas1.create_window(10, 260, anchor=NW, window=pid_btn)
 
     is_pid = create_circle(230,285,15,canvas1)
